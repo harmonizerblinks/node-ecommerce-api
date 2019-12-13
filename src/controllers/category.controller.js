@@ -56,6 +56,30 @@ exports.findOne = (req, res) => {
         });
 };
 
+// FIND a Category
+exports.findByName = (req, res) => {
+    console.log('fine By Name');
+    let query = { name: req.params.name };
+    Category.findOne(query)
+        .then(category => {
+            if (!category) {
+                return res.status(404).send({
+                    message: "Category not found with Name " + req.params.name
+                });
+            }
+            res.send(category);
+        }).catch(err => {
+            if (err.kind === 'ObjectId') {
+                return res.status(404).send({
+                    message: "Category not found with name " + req.params.name
+                });
+            }
+            return res.status(500).send({
+                message: "Error retrieving Category with name " + req.params.name
+            });
+        });
+};
+
 // UPDATE a Category
 exports.update = (req, res) => {
     var body = req.body;

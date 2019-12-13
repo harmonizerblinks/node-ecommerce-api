@@ -3,13 +3,13 @@ module.exports = function(app) {
     var brands = require('../controllers/brands.controller.js');
     const passport = require('passport');
 
-    // Create a new Customer
+    // Create a new Brand
     app.post('/api/brands', brands.create);
 
-    // Retrieve all Customer
+    // Retrieve all Brand
     app.get('/api/brands', brands.findAll);
 
-    // Retrieve a single Customer by Id
+    // Retrieve a single Brand by Id
     /**
      * @swagger
      * /api/brands/{brandId}:
@@ -21,12 +21,12 @@ module.exports = function(app) {
      */
     app.get('/api/brands/:brandId', brands.findOne);
 
-    // 
+    // Retrieve a single Brand by name
     app.get('/api/brands/name/:name', brands.findByName);
 
-    // Update a Customer with Id
+    // Update a Brand with Id
     app.put('/api/brands/:brandId', brands.update);
 
-    // Delete a Customer with Id
+    // Delete a Brand with Id
     app.delete('/api/brands/:brandId', brands.delete);
 }

@@ -2,18 +2,21 @@ module.exports = function(app) {
 
     var category = require('../controllers/category.controller.js');
 
-    // Create a new Customer
+    // Create a new Category
     app.post('/api/category', category.create);
 
-    // Retrieve all Customer
+    // Retrieve all Category
     app.get('/api/category', category.findAll);
 
-    // Retrieve a single Customer by Id
+    // Retrieve a single Category by Id
     app.get('/api/category/:categoryId', category.findOne);
 
-    // Update a Customer with Id
+    // Retrieve a single Category by name
+    app.get('/api/category/name/:name', category.findByName);
+
+    // Update a Category with Id
     app.put('/api/category/:categoryId', category.update);
 
-    // Delete a Customer with Id
+    // Delete a Category with Id
     app.delete('/api/category/:categoryId', category.delete);
 }

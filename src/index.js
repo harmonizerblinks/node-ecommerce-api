@@ -1,6 +1,6 @@
 const express = require('express');
 const bodyParser = require('body-parser');
-const fileUpload = require('express-fileupload');
+// const fileUpload = require('express-fileupload');
 const cors = require('cors');
 const passport = require('passport');
 const path = require('path');
@@ -19,6 +19,7 @@ const mongoose = require('mongoose');
 mongoose.Promise = global.Promise;
 
 // mongo configuration
+mongoose.set('useCreateIndex', true)
 
 // Connecting to the database
 mongoose.connect(Config.url, { useUnifiedTopology: true })
@@ -31,7 +32,7 @@ mongoose.connect(Config.url, { useUnifiedTopology: true })
 
 // defining the Middleware
 app.use(cors());
-app.use(fileUpload);
+// app.use(fileUpload);
 // Set the static folder
 app.use(express.static(path.join(__dirname, 'public')));
 // Bodyparser Middleware

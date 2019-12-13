@@ -36,6 +36,7 @@ exports.findAll = (req, res) => {
 
 // FIND a Brand
 exports.findOne = (req, res) => {
+    console.log('fine By Id');
     Brand.findById(req.params.brandId)
         .then(brand => {
             if (!brand) {
@@ -59,6 +60,7 @@ exports.findOne = (req, res) => {
 
 // FIND a Brand
 exports.findByName = (req, res) => {
+    console.log('fine By Name');
     let query = { name: req.params.name };
     Brand.findOne(query)
         .then(brand => {

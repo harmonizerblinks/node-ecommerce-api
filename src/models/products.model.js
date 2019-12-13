@@ -20,6 +20,7 @@ const ProductColorsSchema = mongoose.Schema({
 
 const ProductImagesSchema = mongoose.Schema({
     imageurl: { type: String, required: true },
+    featured: { type: Boolean, required: true, default: false },
     created: { type: Date, index: true, default: Date.now },
 });
 
