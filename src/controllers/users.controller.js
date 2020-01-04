@@ -84,7 +84,7 @@ exports.comparePassword = (password, hash, callback) => {
 
 exports.profile = (req, res) => {
     if (req.user) {
-        res.send(req.users);
+        res.send(req.user);
     } else {
         res.status(500).send({
             message: "Authentication not Valid"

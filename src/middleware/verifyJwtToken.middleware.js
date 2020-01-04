@@ -1,11 +1,12 @@
 const jwt = require('jsonwebtoken');
 const config = require('../config/mongodb.config.js');
-const User = require('../model/user.model.js');
-const Role = require('../model/role.model.js');
+const User = require('../models/users.model.js');
+const Role = require('../models/roles.model.js');
 
 verifyToken = (req, res, next) => {
-    let token = req.headers['x-access-token'];
-
+    console.log(req.headers);
+    let token = req.headers['authorization'];
+    console.log(token);
     if (!token) {
         return res.status(403).send({
             auth: false,
@@ -20,14 +21,14 @@ verifyToken = (req, res, next) => {
                 message: 'Fail to Authentication. Error -> ' + err
             });
         }
-        req.userId = decoded.id;
+        req.user = decoded.data;
         next();
     });
 }
 
 isAdmin = (req, res, next) => {
 
-    User.findOne({ _id: req.userId })
+    User.findById(req.user._id)
         .exec((err, user) => {
             if (err) {
                 if (err.kind === 'ObjectId') {
@@ -93,9 +94,10 @@ isPmOrAdmin = (req, res, next) => {
         });
 }
 
-const authJwt = {};
-authJwt.verifyToken = verifyToken;
-authJwt.isAdmin = isAdmin;
-authJwt.isPmOrAdmin = isPmOrAdmin;
+const authJwt = {
+    verifyToken: verifyToken,
+    isAdmin: isAdmin,
+    isPmOrAdmin: isPmOrAdmin
+};
 
-// module.exports = authJwt;
+module.exports = authJwt;

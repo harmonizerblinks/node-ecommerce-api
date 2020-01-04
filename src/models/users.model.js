@@ -1,4 +1,5 @@
-const mongoose = require('mongoose');
+const mongoose = require('mongoose'),
+    Schema = mongoose.Schema;
 // const bcrypt = require('bcryptjs')
 const uniqueValidator = require('mongoose-unique-validator');
 
@@ -8,14 +9,12 @@ const UserSchema = mongoose.Schema({
     password: { type: String, required: true },
     email: { type: String, required: true, unique: true },
     mobile: { type: String, minlength: 8, maxlength: 15, required: true, unique: true },
-    gender: { type: String, minlength: 4, required: true },
     usertype: { type: String, required: true },
-    roles: { type: Array, required: true },
-    position: { type: String, required: true },
+    roles: { type: [String], required: true },
     created: { type: Date, index: true, default: Date.now },
+    muserid: { type: Schema.Types.ObjectId, ref: 'users', required: false },
     updated: { type: Date, index: true, default: Date.now }
 });
-
 
 UserSchema.plugin(uniqueValidator);
 

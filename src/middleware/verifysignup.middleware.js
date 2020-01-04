@@ -15,7 +15,7 @@ checkDuplicateUserNameOrEmail = (req, res, next) => {
             }
 
             if (user) {
-                res.status(400).send("Fail -> Username is already taken!");
+                res.status(400).send({ message: "Fail -> Username is already taken!" });
                 return;
             }
 
@@ -55,4 +55,4 @@ const signUpVerify = {
 // signUpVerify.checkDuplicateUserNameOrEmail = checkDuplicateUserNameOrEmail;
 // signUpVerify.checkRolesExisted = checkRolesExisted;
 
-// module.exports = signUpVerify;
+module.exports = signUpVerify;

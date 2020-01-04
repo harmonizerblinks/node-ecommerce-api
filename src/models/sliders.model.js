@@ -1,4 +1,6 @@
-const mongoose = require('mongoose');
+const mongoose = require('mongoose'),
+    Schema = mongoose.Schema;
+const uniqueValidator = require('mongoose-unique-validator');
 
 const SliderSchema = mongoose.Schema({
     name: { type: String, required: true },
@@ -8,6 +10,7 @@ const SliderSchema = mongoose.Schema({
     description: { type: String, minlength: 18, required: true },
     link: { type: String, required: true },
     created: { type: Date, index: true, default: Date.now },
+    muserid: { type: Schema.Types.ObjectId, ref: 'users', required: false },
     updated: { type: Date, index: true, default: Date.now }
 });
 
