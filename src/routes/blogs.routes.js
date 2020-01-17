@@ -2,18 +2,18 @@ module.exports = function(app) {
 
     var blogs = require('../controllers/blogs.controller.js');
 
-    // Create a new Customer
+    // Create a new Blog
     app.post('/api/blogs', blogs.create);
 
-    // Retrieve all Customer
+    // Retrieve all Blog
     app.get('/api/blogs', blogs.findAll);
 
-    // Retrieve a single Customer by Id
+    // Retrieve a single Blog by Id
     app.get('/api/blogs/:blogsId', blogs.findOne);
 
-    // Update a Customer with Id
+    // Update a Blog with Id
     app.put('/api/blogs/:blogsId', blogs.update);
 
-    // Delete a Customer with Id
+    // Delete a Blog with Id
     app.delete('/api/blogs/:blogsId', blogs.delete);
 }

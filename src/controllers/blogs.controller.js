@@ -5,13 +5,7 @@ const Blog = require('../models/blogs.model.js');
 exports.create = (req, res) => {
     // console.log(req.body);
     // Create a Blog
-    const blog = new Blog({
-        title: req.body.title,
-        imageurl: req.body.imageurl,
-        description: req.body.description,
-        content: req.body.content,
-        postedby: req.body.postedby,
-    });
+    const blog = new Blog(req.body);
 
     // Save a Blog in the MongoDB
     blog.save()
@@ -64,15 +58,10 @@ exports.findOne = (req, res) => {
 
 // UPDATE a Blog
 exports.update = (req, res) => {
+    var blog = req.body;
+    blog.updated = new Date();
     // Find blog and update it
-    Blog.findByIdAndUpdate(req.params.blogId, {
-            title: req.body.title,
-            imageurl: req.body.imageurl,
-            description: req.body.description,
-            content: req.body.content,
-            postedby: req.body.postedby,
-            updated: Date.now
-        }, { new: true })
+    Blog.findByIdAndUpdate(req.params.blogId, blog, { new: true })
         .then(blog => {
             if (!blog) {
                 return res.status(404).send({

@@ -9,6 +9,9 @@ const CustomerSchema = mongoose.Schema({
     mobile: { type: String, index: true, required: true, unique: true },
     password: { type: String, required: false },
     address: { type: Object, required: false },
+    wishlist: { type: [String], required: false },
+    wishlist: { type: [String], required: false },
+    recently: { type: Array, required: false },
     carts: { type: Array, required: false },
     created: { type: Date, index: true, default: Date.now },
     updated: { type: Date, index: true, default: Date.now }

@@ -5,6 +5,7 @@ const uniqueValidator = require('mongoose-unique-validator');
 const CategorySchema = mongoose.Schema({
     name: { type: String, index: true, required: true, unique: true },
     sort: { type: Number, required: false },
+    featured: { type: Boolean, required: true, default: true },
     banner: { type: String, required: false },
     imageurl: { type: String, required: false },
     description: { type: String, required: false },

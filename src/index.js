@@ -19,10 +19,13 @@ const mongoose = require('mongoose');
 mongoose.Promise = global.Promise;
 
 // mongo configuration
-mongoose.set('useCreateIndex', true)
+mongoose.set('useCreateIndex', true);
+mongoose.set('useNewUrlParser', true);
+mongoose.set('useUnifiedTopology', true);
+mongoose.set('useFindAndModify', true);
 
 // Connecting to the database
-mongoose.connect(Config.url, { useUnifiedTopology: true })
+mongoose.connect(Config.url)
     .then(() => {
         console.log("Successfully connected to MongoDB.");
     }).catch(err => {
@@ -46,6 +49,7 @@ console.log('working')
 // require('./config/authguard.config.js')(passport);
 require('./routes/customers.routes.js')(app);
 require('./routes/brands.routes.js')(app);
+require('./routes/branch.routes.js')(app);
 require('./routes/category.routes.js')(app);
 require('./routes/brands.routes.js')(app);
 require('./routes/blogs.routes.js')(app);

@@ -7,7 +7,7 @@ const RoleSchema = mongoose.Schema({
     description: { type: String, required: false },
     status: { type: Boolean, required: true, default: true },
     created: { type: Date, index: true, default: Date.now },
-    muserid: { type: Schema.Types.ObjectId, ref: 'users', required: false },
+    muserid: { type: Schema.Types.ObjectId, ref: 'user', required: false },
     updated: { type: Date, index: true, default: Date.now }
 });
 

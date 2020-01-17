@@ -26,8 +26,8 @@ module.exports = function(app) {
     // Retrieve all Products
     app.get('/api/website/products', website.findAllProducts);
 
-    // Retrieve all Brands
-    app.get('/api/website/brands', website.findAllBrands);
+    // Retrieve all Branches
+    app.get('/api/website/branches', website.findAllBranch);
 
     // Retrieve a single Brand by name
     app.get('/api/website/brands/:name', website.findBrandByName);

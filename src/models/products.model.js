@@ -55,11 +55,14 @@ const ProductSchema = mongoose.Schema({
     imageurl: { type: String, required: true },
     images: { type: [ProductImagesSchema], required: false },
     categoryid: { type: Schema.Types.ObjectId, ref: 'category', required: true },
+    categoryids: { type: [Schema.Types.ObjectId], ref: 'category', required: true },
     category: { type: ProductCategorySchema, required: false },
     brandid: { type: Schema.Types.ObjectId, ref: 'brand', required: false },
     brand: { type: ProductBrandSchema, required: false },
     introduction: { type: String, required: false },
     description: { type: String, required: false },
+    original_amount: { type: String, required: true, default: 0 },
+    current_amount: { type: String, required: true, default: 0 },
     amount: { type: String, required: true, default: 0 },
     sizes: { type: [ProductSizesSchema], required: false },
     colors: { type: [ProductColorsSchema], required: false },
@@ -71,9 +74,9 @@ const ProductSchema = mongoose.Schema({
     meta_tag: { type: String, required: false },
     meta_keyword: { type: String, required: false },
     meta_description: { type: String, minlength: 10, required: false },
-    userid: { type: Schema.Types.ObjectId, ref: 'users', required: false },
+    userid: { type: Schema.Types.ObjectId, ref: 'user', required: false },
     created: { type: Date, index: true, default: Date.now },
-    muserid: { type: Schema.Types.ObjectId, ref: 'users', required: false },
+    muserid: { type: Schema.Types.ObjectId, ref: 'user', required: false },
     updated: { type: Date, index: true, default: Date.now }
 });
 

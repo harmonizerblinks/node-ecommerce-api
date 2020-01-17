@@ -18,7 +18,7 @@ const OrderSchema = mongoose.Schema({
 
 OrderSchema.plugin(uniqueValidator);
 
-module.exports = mongoose.model('orders', OrderSchema);
+module.exports = mongoose.model('order', OrderSchema);
 
 function generateOTP() {
     var digits = '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ';

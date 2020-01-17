@@ -11,7 +11,7 @@ module.exports = function(app) {
     app.post('/api/login', users.login);
 
     // Retrieve all User
-    app.get('/api/users', verify.verifyToken, users.findAll);
+    app.get('/api/users', users.findAll);
 
     // Retrieve Current Login User Prodile
     app.get('/api/profile', verify.verifyToken, users.profile);

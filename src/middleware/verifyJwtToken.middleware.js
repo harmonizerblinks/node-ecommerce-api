@@ -3,7 +3,7 @@ const config = require('../config/mongodb.config.js');
 const User = require('../models/users.model.js');
 const Role = require('../models/roles.model.js');
 
-verifyToken = (req, res, next) => {
+verifyToken = async(req, res, next) => {
     console.log(req.headers);
     let token = req.headers['authorization'];
     console.log(token);
@@ -14,7 +14,7 @@ verifyToken = (req, res, next) => {
         });
     }
 
-    jwt.verify(token, config.secret, (err, decoded) => {
+    jwt.verify(token, config.secret, async(err, decoded) => {
         if (err) {
             return res.status(500).send({
                 auth: false,
@@ -22,6 +22,10 @@ verifyToken = (req, res, next) => {
             });
         }
         req.user = decoded.data;
+        req.body.muserid = decoded.data.id;
+        if (req.body.userid == null) { req.body.userid = decoded.data.id; }
+        if (req.body.code == null) { req.body.code = await generateOTP(); }
+
         next();
     });
 }
@@ -101,3 +105,17 @@ const authJwt = {
 };
 
 module.exports = authJwt;
+
+async function generateOTP(length) {
+    var digits = '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+
+    var otpLength = length;
+    var otp = '';
+
+    for (let i = 1; i <= otpLength; i++) {
+        var index = Math.floor(Math.random() * (digits.length));
+
+        otp = otp + digits[index];
+    }
+    return otp.toUpperCase();
+}
