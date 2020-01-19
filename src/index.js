@@ -1,6 +1,13 @@
 const express = require('express');
+const mongoose = require('mongoose');
+const rateLimit = require('express-rate-limit');
+const helmet = require('helmet');
+const mongoSanitize = require('express-mongo-sanitize');
+const xss = require('xss-clean');
+const http = require('http');
+const socketIO = require('socket.io');
 const bodyParser = require('body-parser');
-// const fileUpload = require('express-fileupload');
+const fileUpload = require('express-fileupload');
 const cors = require('cors');
 const passport = require('passport');
 const path = require('path');
@@ -14,7 +21,6 @@ const PORT = process.env.PORT || 4000;
 
 // Configuring the database
 const Config = require('./config/mongodb.config.js');
-const mongoose = require('mongoose');
 
 mongoose.Promise = global.Promise;
 
@@ -35,14 +41,41 @@ mongoose.connect(Config.url)
 
 // defining the Middleware
 app.use(cors());
-// app.use(fileUpload);
-// Set the static folder
-app.use(express.static(path.join(__dirname, 'public')));
+
 // Bodyparser Middleware
 app.use(bodyParser.json());
+
+app.use(fileUpload({
+    limits: { fileSize: 50 * 1024 * 1024 },
+    useTempFiles: true,
+    tempFileDir: '/tmp/'
+}));
+// Set the static folder
+app.use('/public', express.static(path.join(__dirname, '../public')))
+
+// Bodyparser Middleware
+// app.use(bodyParser.json({ limit: '10kb' }));
+
+// Helmet
+app.use(helmet());
+// Rate Limiting
+const limit = rateLimit({
+    max: 100, // max requests
+    windowMs: 60 * 60 * 1000, // 1 Hour of 'ban' / lockout 
+    message: 'Too many requests' // message to send
+});
+app.use('/routeName', limit); // Setting limiter on specific route
+// Body Parser
+app.use(express.json({ limit: '1000kb' })); // Body limit is 10
+
+// Data Sanitization against NoSQL Injection Attacks
+app.use(mongoSanitize());
+// Data Sanitization against XSS attacks
+app.use(xss());
+
 // Passport Middleware
-// app.use(passport.initialize());
-// app.use(passport.session());
+app.use(passport.initialize());
+app.use(passport.session());
 
 console.log('working')
 
