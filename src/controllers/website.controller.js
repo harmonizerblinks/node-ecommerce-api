@@ -3,7 +3,7 @@ const Brands = require('../models/brands.model.js');;
 const Product = require('../models/products.model.js');
 const Customer = require('../models/customers.model.js');
 const Brand = require('../models/brands.model.js');
-const Blog = require('../models/blogs.model.js');
+const Blog = require('../models/blog.model.js');
 const Branch = require('../models/branch.model.js');
 // var async = require("async");
 

@@ -59,7 +59,7 @@ exports.login = (req, res) => {
                 }, config.secret, {
                     expiresIn: 684800
                 });
-                res.send({ success: true, accesstoken: token });
+                res.send({ success: true, access_token: token });
             } else {
                 res.status(500).send({ success: false, message: 'Password is not correct' })
             }

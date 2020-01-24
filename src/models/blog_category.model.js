@@ -2,7 +2,7 @@ const mongoose = require('mongoose'),
     Schema = mongoose.Schema;
 const uniqueValidator = require('mongoose-unique-validator');
 
-const CategorySchema = mongoose.Schema({
+const BlogCategorySchema = mongoose.Schema({
     name: { type: String, index: true, required: true, unique: true },
     sort: { type: Number, required: false, default: 0 },
     featured: { type: Boolean, required: true, default: true },
@@ -20,6 +20,6 @@ const CategorySchema = mongoose.Schema({
     updated: { type: Date, index: true, default: Date.now }
 });
 
-CategorySchema.plugin(uniqueValidator);
+BlogCategorySchema.plugin(uniqueValidator);
 
-module.exports = mongoose.model('category', CategorySchema);
+module.exports = mongoose.model('blogcategory', BlogCategorySchema);

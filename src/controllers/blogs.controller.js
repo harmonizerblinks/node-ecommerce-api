@@ -1,4 +1,4 @@
-const Blog = require('../models/blogs.model.js');
+const Blog = require('../models/blog.model.js');
 
 
 // POST a Blog

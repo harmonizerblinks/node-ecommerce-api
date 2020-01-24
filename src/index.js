@@ -60,13 +60,13 @@ app.use('/public', express.static(path.join(__dirname, '../public')))
 app.use(helmet());
 // Rate Limiting
 const limit = rateLimit({
-    max: 100, // max requests
+    max: 1000, // max requests
     windowMs: 60 * 60 * 1000, // 1 Hour of 'ban' / lockout 
     message: 'Too many requests' // message to send
 });
-app.use('/routeName', limit); // Setting limiter on specific route
+app.use('/api', limit); // Setting limiter on specific route
 // Body Parser
-app.use(express.json({ limit: '1000kb' })); // Body limit is 10
+app.use(express.json({ limit: '30mb' })); // Body limit is 10
 
 // Data Sanitization against NoSQL Injection Attacks
 app.use(mongoSanitize());
@@ -88,6 +88,7 @@ require('./routes/brands.routes.js')(app);
 require('./routes/blogs.routes.js')(app);
 require('./routes/users.routes.js')(app);
 require('./routes/products.routes.js')(app);
+require('./routes/gallery.routes.js')(app);
 require('./routes/website.routes.js')(app);
 
 // Api Documentation Setup
@@ -112,14 +113,14 @@ app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocs));
 // Handler for 404 - Resource Not Found
 app.use((req, res, next) => {
     res.status(404).send({ message: 'We think you are lost!' });
-})
+});
 
 // Handler for Error 500
 app.use((err, req, res, next) => {
     console.error(err.stack)
     res.status(500).send({ message: 'Internal Server error!' });
     // res.sendFile(path.join(__dirname, '../public/500.html'))
-})
+});
 
 // Create a Server
 var server = app.listen(PORT, function() {
