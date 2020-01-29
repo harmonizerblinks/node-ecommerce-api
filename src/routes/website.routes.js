@@ -21,7 +21,10 @@ module.exports = function(app) {
     app.get('/api/website/category/all', website.findAllCategoryProducts);
 
     // Retrieve all Products by CategoryId
-    app.get('/api/website/brand/:categoryId', website.findAllProductsByCategory);
+    app.get('/api/website/category/:categoryId', website.findAllProductsByCategory);
+
+    // Retrieve all Products by CategoryId
+    app.get('/api/website/category/products/:categoryId', website.findAllProductsByCategory);
 
     // Retrieve all Products
     app.get('/api/website/products', website.findAllProducts);

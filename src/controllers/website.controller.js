@@ -1,7 +1,7 @@
 const Category = require('../models/category.model.js');
 const Brands = require('../models/brands.model.js');;
 const Product = require('../models/products.model.js');
-const Customer = require('../models/customers.model.js');
+const Customer = require('../models/customer.model.js');
 const Brand = require('../models/brands.model.js');
 const Blog = require('../models/blog.model.js');
 const Branch = require('../models/branch.model.js');
@@ -40,6 +40,7 @@ exports.findAllBranch = async(req, res) => {
 
 // FETCH all Brand
 exports.findAllBrands = async(req, res) => {
+    console.info('getting all Brands')
     await Brands.find()
         .then(brands => {
             res.send(brands);
@@ -142,7 +143,7 @@ exports.findBrandCategoryProducts = (req, res) => {
             // let querys = { brandid: brand._id, categoryid: req.params.categoryId };
             await Category.findById(req.params.categoryId)
                 .then(async(categorys) => {
-                    let querys = { brandid: brand.brandid, categoryid: req.params.categoryId };
+                    let querys = { brandid: brand.brandid, categoryid: [req.params.categoryId] };
                     // console.log(querys);
                     await Product.find(querys)
                         .then(products => {
@@ -209,6 +210,18 @@ exports.findAllCategorys = async(req, res) => {
         });
 };
 
+// FETC Category By Id
+exports.findCategoryById = async(req, res) => {
+    await Category.findById(req.params.categoryId)
+        .then(categorys => {
+            res.send(categorys);
+        }).catch(err => {
+            res.status(500).send({
+                message: err.message
+            });
+        });
+};
+
 
 // FETCH all Categorys With their Products
 exports.findAllCategoryProducts = async(req, res) => {
@@ -218,7 +231,7 @@ exports.findAllCategoryProducts = async(req, res) => {
             const start = async() => {
                 const categories = [];
                 await asyncForEach(categorys, async(cat) => {
-                    let query = { categoryid: cat._id };
+                    let query = { categoryid: [cat._id] };
                     console.log(query);
                     cat.products = await Product.find(query);
                     categories.push(cat);
@@ -234,7 +247,7 @@ exports.findAllCategoryProducts = async(req, res) => {
         });
 };
 
-
+// you will explain wat u understand
 // FETCH all Products
 exports.findAllProducts = async(req, res) => {
     await Product.find()

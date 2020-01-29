@@ -17,6 +17,22 @@ exports.create = (req, res) => {
         });
 };
 
+// POST a Upload
+exports.upload = (req, res) => {
+    // Get Uploaded Product
+    const products = req.body;
+    // req.send(products);
+    // Save Products in the MongoDB
+    Product.insertMany(products).save()
+        .then(data => {
+            res.send(data);
+        }).catch(err => {
+            res.status(500).send({
+                message: err.message
+            });
+        });
+};
+
 
 // FETCH all Products
 exports.findAll = (req, res) => {

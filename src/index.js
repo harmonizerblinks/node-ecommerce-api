@@ -17,6 +17,8 @@ const swaggerUi = require('swagger-ui-express');
 // initialize the app
 const app = express();
 
+global.appRoot = path.resolve(__dirname);
+
 const PORT = process.env.PORT || 4000;
 
 // Configuring the database
@@ -42,14 +44,15 @@ mongoose.connect(Config.url)
 // defining the Middleware
 app.use(cors());
 
-// Bodyparser Middleware
-app.use(bodyParser.json());
-
 app.use(fileUpload({
     limits: { fileSize: 50 * 1024 * 1024 },
-    useTempFiles: true,
-    tempFileDir: '/tmp/'
+    // useTempFiles: true,
+    // tempFileDir: '/tmp/'
 }));
+
+// Body Parser
+app.use(express.json({ limit: '30mb' })); // Body limit is 30Mb
+
 // Set the static folder
 app.use('/public', express.static(path.join(__dirname, '../public')))
 
@@ -64,9 +67,7 @@ const limit = rateLimit({
     windowMs: 60 * 60 * 1000, // 1 Hour of 'ban' / lockout 
     message: 'Too many requests' // message to send
 });
-app.use('/api', limit); // Setting limiter on specific route
-// Body Parser
-app.use(express.json({ limit: '30mb' })); // Body limit is 10
+// app.use('/api', limit); // Setting limiter on specific route
 
 // Data Sanitization against NoSQL Injection Attacks
 app.use(mongoSanitize());

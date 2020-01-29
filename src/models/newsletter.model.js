@@ -3,16 +3,17 @@ const mongoose = require('mongoose'),
 const uniqueValidator = require('mongoose-unique-validator');
 
 const DiscountSchema = mongoose.Schema({
-    name: { type: String, required: true },
-    percentage: { type: Number, required: false },
-    description: { type: String, required: false },
-    productid: { type: [Schema.Types.ObjectId], ref: 'product', required: false },
-    status: { type: Boolean, required: true, default: true },
+    from: { type: String, required: false },
+    to: { type: [String], required: false },
+    bcc: { type: String, required: false },
+    subject: { type: String, required: true },
+    body: { type: Number, required: false },
+    draft: { type: Boolean, required: true, default: false },
+    status: { type: Boolean, required: true, default: false },
     userid: { type: Schema.Types.ObjectId, ref: 'user', required: false },
     created: { type: Date, index: true, default: Date.now },
     muserid: { type: Schema.Types.ObjectId, ref: 'user', required: false },
     updated: { type: Date, index: true, default: Date.now }
 });
-
 
 module.exports = mongoose.model('discount', DiscountSchema);

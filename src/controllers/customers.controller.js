@@ -1,4 +1,4 @@
-const Customer = require('../models/customers.model.js');
+const Customer = require('../models/customer.model.js');
 
 
 // POST a Customer

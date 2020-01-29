@@ -5,6 +5,9 @@ module.exports = function(app) {
     // Create a new Product
     app.post('/api/products', products.create);
 
+    // Upload Product
+    app.post('/api/products/upload', products.upload);
+
     // Retrieve all Product
     app.get('/api/products', products.findAll);
 
