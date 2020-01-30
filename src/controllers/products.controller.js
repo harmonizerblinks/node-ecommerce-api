@@ -23,7 +23,7 @@ exports.upload = (req, res) => {
     const products = req.body;
     // req.send(products);
     // Save Products in the MongoDB
-    Product.insertMany(products).save()
+    Product.insertMany(products)
         .then(data => {
             res.send(data);
         }).catch(err => {
