@@ -43,7 +43,6 @@ exports.login = (req, res) => {
                     message: "User not found with username " + username
                 });
             }
-
             var passwordIsValid = bcrypt.compareSync(req.body.password, user.password);
             if (passwordIsValid) {
                 const token = jwt.sign({
@@ -51,9 +50,7 @@ exports.login = (req, res) => {
                     data: {
                         _id: user._id,
                         fullname: user.fullname,
-                        username: user.username,
-                        mobile: user.mobile,
-                        email: user.email,
+                        usertype: user.usertype,
                         roles: user.roles
                     },
                 }, config.secret, {
@@ -84,7 +81,24 @@ exports.comparePassword = (password, hash, callback) => {
 
 exports.profile = (req, res) => {
     if (req.user) {
-        res.send(req.user);
+        User.findById(req.user._id)
+            .then(user => {
+                if (!user) {
+                    return res.status(404).send({
+                        message: "Invalid Token"
+                    });
+                }
+                res.send(user);
+            }).catch(err => {
+                if (err.kind === 'ObjectId') {
+                    return res.status(404).send({
+                        message: "User Details not found with"
+                    });
+                }
+                return res.status(500).send({
+                    message: "Error retrieving User with id " + req.user._id
+                });
+            });
     } else {
         res.status(500).send({
             message: "Authentication not Valid"

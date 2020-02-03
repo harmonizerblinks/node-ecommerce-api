@@ -12,6 +12,7 @@ const CategorySchema = mongoose.Schema({
     status: { type: Boolean, required: true, default: true },
     has_sub: { type: Boolean, required: true, default: true },
     categoryid: { type: [Schema.Types.ObjectId], required: false },
+    productid: { type: [Schema.Types.ObjectId], ref: 'product', required: false },
     meta_title: { type: String, required: false, default: 'title' },
     meta_keywords: { type: String, required: false, default: 'keyword' },
     meta_description: { type: String, minlength: 10, required: false, default: 'description' },

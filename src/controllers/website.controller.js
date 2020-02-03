@@ -1,3 +1,6 @@
+const mongoose = require('mongoose'),
+    ObjectId = mongoose.Types.ObjectId;
+
 const Category = require('../models/category.model.js');
 const Brands = require('../models/brands.model.js');;
 const Product = require('../models/products.model.js');
@@ -66,26 +69,38 @@ exports.findAllBlogs = async(req, res) => {
 
 // FIND a Brand by name and Include Categories
 exports.findBrandByName = (req, res) => {
-    let query = { name: req.params.name };
-    Brand.findOne(query)
-        .then(brand => {
+    let query = [{
+            $lookup: {
+                from: "categories",
+                localField: "categoryid",
+                foreignField: "_id",
+                as: "categories"
+            }
+        },
+        { $match: { name: req.params.name } }
+    ];
+    // let query = { name: req.params.name };
+    Brand.aggregate(query)
+        .then(async(brand) => {
             if (!brand) {
                 return res.status(404).send({
                     message: "Brand not found with Name " + req.params.name
                 });
             }
-            const start = async() => {
-                const categories = [];
-                await asyncForEach(brand.categoryid, async(c) => {
-                    const category = await Category.findById(c);
-                    categories.push(category);
-                });
-                // console.log('Done');
-                brand.categorys = categories;
-                res.send(brand);
-            }
-            start();
-            // res.send(brand);
+            // console.log(brand)
+            // var result = db.users.findOne({"name":"Tom Benzamin"},{"address_ids":1})
+            // const start = async() => {
+            //     const categories = [];
+            //     await asyncForEach(brand.categoryid, async(c) => {
+            //         const category = await Category.findById(c);
+            //         categories.push(category);
+            //     });
+            //     // console.log('Done');
+            //     brand.categorys = categories;
+            //     res.send(brand);
+            // }
+            // start();
+            res.send(brand);
         }).catch(err => {
             if (err.kind === 'ObjectId') {
                 return res.status(404).send({
@@ -100,24 +115,35 @@ exports.findBrandByName = (req, res) => {
 
 // FIND a Brand Promotions Products
 exports.findBrandPromotions = (req, res) => {
-    let query = { name: req.params.name };
-    Brand.findById(req.body.brandid)
+    let query = [{
+            $lookup: {
+                from: "products",
+                localField: "promotions",
+                foreignField: "_id",
+                as: "products"
+            }
+        },
+        { $match: { _id: req.params.brandid } }
+    ];
+    // let query = { name: req.params.name };
+    Brand.aggregate(query)
         .then(brand => {
             if (!brand) {
                 return res.status(404).send({
                     message: "Brand not found with id " + req.params.brandid
                 });
             }
-            const start = async() => {
-                const products = [];
-                await asyncForEach(brand.promotions, async(p) => {
-                    const product = await Product.findById(p);
-                    products.push(products);
-                });
-                // console.log('Done');
-                res.send(products);
-            }
-            start();
+            // const start = async() => {
+            //     const products = [];
+            //     await asyncForEach(brand.promotions, async(p) => {
+            //         const product = await Product.findById(p);
+            //         products.push(products);
+            //     });
+            //     // console.log('Done');
+            //     res.send(products);
+            // }
+            // start();
+            res.send(brand);
         }).catch(err => {
             if (err.kind === 'ObjectId') {
                 return res.status(404).send({
@@ -140,22 +166,32 @@ exports.findBrandCategoryProducts = (req, res) => {
                     message: "Brand not found with Name " + req.params.name
                 });
             }
+            console.log(req.params.categoryId);
+            let que = [{
+                    $lookup: {
+                        from: "products",
+                        // pipeline: [
+                        //     { $match: { _id: brand._id } },
+                        // ],
+                        localField: "productid",
+                        foreignField: "_id",
+                        as: "products"
+                    }
+                },
+                { $match: { _id: ObjectId(req.params.categoryId) } }
+            ];
             // let querys = { brandid: brand._id, categoryid: req.params.categoryId };
-            await Category.findById(req.params.categoryId)
+            await Category.aggregate(que)
                 .then(async(categorys) => {
-                    let querys = { brandid: brand.brandid, categoryid: [req.params.categoryId] };
-                    // console.log(querys);
-                    await Product.find(querys)
-                        .then(products => {
-                            // console.log(products);
-                            categorys.products = products;
-                            // console.log('returning')
-                            res.send(categorys);
-                        }).catch(err => {
-                            res.status(500).send({
-                                message: err.message
-                            });
-                        });
+                    // await Category.aggregate(que)
+                    //     .then((categor) => {
+                    //         res.send(categor);
+                    //     }).catch(err => {
+                    //         res.status(500).send({
+                    //             message: err.message
+                    //         });
+                    //     });
+                    res.send(categorys);
                 }).catch(err => {
                     res.status(500).send({
                         message: err.message

@@ -14,7 +14,6 @@ const BrandSchema = mongoose.Schema({
     description: { type: String, minlength: 10, required: false },
     promotions: { type: [Schema.Types.ObjectId], ref: 'product', required: false },
     categoryid: { type: [Schema.Types.ObjectId], ref: 'category', required: false },
-    categorys: { type: Array },
     meta_tag: { type: String, required: false },
     meta_keyword: { type: String, required: false },
     meta_description: { type: String, minlength: 10, required: false },

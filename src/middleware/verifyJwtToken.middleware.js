@@ -4,9 +4,14 @@ const User = require('../models/users.model.js');
 const Role = require('../models/roles.model.js');
 
 verifyToken = async(req, res, next) => {
-    console.log(req.headers);
-    let token = req.headers['authorization'];
-    console.log(token);
+    // console.log(req.headers);
+    // let token = req.headers['authorization'];
+    let token = req.headers['x-access-token'] || req.headers['authorization']; // Express headers are auto converted to lowercase
+    if (token.startsWith('Bearer ')) {
+        // Remove Bearer from string
+        token = token.slice(7, token.length);
+    }
+    // console.log(token);
     if (!token) {
         return res.status(403).send({
             auth: false,
