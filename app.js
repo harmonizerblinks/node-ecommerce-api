@@ -22,12 +22,11 @@ global.appRoot = path.resolve(__dirname);
 const PORT = process.env.PORT || 4000;
 
 // Creating a Server
-let server = http.createServer(app);
-
-let io = socketIO(server);
+const server = http.createServer(app);
 
 // Start Server using environment port
-server.listen(PORT, () => {
+server.listen(PORT, (data) => {
+    console.log(data);
     console.info('Server is running on ' + PORT)
 });
 
@@ -44,12 +43,26 @@ mongoose.set('useFindAndModify', true);
 
 // Connecting to the database
 mongoose.connect(Config.url)
-    .then(() => {
+    .then((data) => {
+        // console.log(data);
         console.log("Successfully connected to MongoDB.");
     }).catch(err => {
         console.log('Could not connect to MongoDB.');
         process.exit();
     });
+
+//Socket Connection
+let io = socketIO(server);
+
+io.on('connection', (socket) => {
+    console.info('a new user has connected')
+    socket.on('message', (msg) => {
+        io.emit('message', msg);
+    });
+    socket.on('disconnect', (socket) => {
+        console.info('a user has disconnected');
+    });
+});
 
 // defining the Middleware
 app.use(cors());
@@ -143,17 +156,6 @@ app.use((err, req, res, next) => {
 //     console.log("App listening at http://%s:%s", host, port)
 
 // });
-
-io.on('connection', (socket) => {
-    console.info('a new user has connected')
-    socket.on('message', (msg) => {
-        io.emit('message', msg);
-    });
-    socket.on('disconnect', (socket) => {
-        console.info('a user has disconnected');
-    });
-});
-
 
 // var io = require('socket.io')(server);
 

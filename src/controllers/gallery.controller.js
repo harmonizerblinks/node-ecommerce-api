@@ -1,6 +1,8 @@
 const Gallery = require('../models/gallery.model.js');
 const config = require('../config/mongodb.config.js');
 var path = require('path');
+const sharp = require('sharp');
+const fs = require('fs');
 var appDir = path.dirname(require.main.filename);
 
 
@@ -18,13 +20,68 @@ exports.create = async(req, res) => {
     // The name of the input field (i.e. "gallery") is used to retrieve the uploaded file
     const file = req.files.file;
     const fname = new Date().getTime() + file.name.replace(/ /g, "_");
-    const name = appRoot + '/../public/' + req.params.type + '/' + fname;
+    const name = appRoot + '/../public/original/' + fname;
+    const destination = appRoot + '/../public/' + req.params.type + '/resize_' + fname;
+    console.log(name);
+    // Use the mv() method to place the file somewhere on your server
+    file.mv(name, function(err) {
+        if (err) {
+            // console.log(err);
+            return res.status(500).send(err);
+        }
+        if (req.params.type === 'items') {
+            sharp(name).resize({ width: 500, height: 500 }).toFile(destination).then((data) => {
+                // fs.unlinkSync();
+                console.log(data);
+            }).catch((err) => {
+                console.log(err);
+            });
+        }
+        // console.log(result);
+        // Create a Gallery
+        const gallery = new Gallery({ name: fname, imageurl: config.app + req.params.type + '/resize_' + fname });
+
+        // Save a Gallery in the MongoDB
+        gallery.save()
+            .then(data => {
+                res.send(data);
+            }).catch(err => {
+                res.status(500).send({
+                    message: err.message
+                });
+            });
+        // res.send('File uploaded!');
+    });
+};
+
+exports.upload = async(req, res) => {
+    console.info('started');
+    if (!req.files || Object.keys(req.files).length === 0) {
+        return res.status(400).send({ message: 'No files were uploaded.' });
+    }
+
+    if (!req.params.type) {
+        return res.status(400).send({ message: 'Image Type must be Provided.' });
+    }
+    console.log(req.files.file);
+    // The name of the input field (i.e. "gallery") is used to retrieve the uploaded file
+    const file = req.files.file;
+    const fname = new Date().getTime() + file.name.replace(/ /g, "_");
+    const name = appRoot + '/../../public/' + req.params.type + '/' + fname;
     console.log(name)
         // Use the mv() method to place the file somewhere on your server
     file.mv(name, function(err) {
         if (err) {
-            console.log(err);
+            // console.log(err);
             return res.status(500).send(err);
+        }
+        if (req.params.type === 'items') {
+            sharp(name).resize({ width: 500, height: 500 }).toFile(name).then((data) => {
+                // fs.unlinkSync();
+                console.log(data);
+            }).catch((err) => {
+                console.log(err);
+            });
         }
         // console.log(result);
         // Create a Gallery
@@ -42,6 +99,7 @@ exports.create = async(req, res) => {
         // res.send('File uploaded!');
     });
 };
+
 
 
 // FETCH all Gallerys

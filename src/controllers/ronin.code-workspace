@@ -1,0 +1,61 @@
+{
+    "folders": [
+		{
+			"path": "/Users/dari/Projects/Fidelity"
+		},
+		{
+			"path": "/Users/dari/Projects/nodejs"
+		},
+		{
+			"path": "/Users/dari/Projects/Angular"
+		},
+		{
+			"path": "/Users/dari/Projects/Mobile"
+		},
+		{
+			"path": "/Applications/MAMP/htdocs/cirque-de-soir"
+		},
+		{
+			"path": "/Users/dari/Projects/Cir-desule"
+		},
+		{
+			"path": "/Users/dari/Projects/Nodejs-RestApi"
+		},
+		{
+			"path": "/Applications/MAMP/htdocs/electroland-v2.0"
+		},
+		{
+			"path": "/Users/dari/Projects/AspnetCore"
+		},
+		{
+			"path": "/Users/dari/Projects/worksuite"
+		},
+		{
+			"path": "/Applications/MAMP/htdocs/Worksuite"
+		},
+		{
+			"path": "/Applications/MAMP/htdocs/dummy_api"
+		},
+		{
+			"path": "/Applications/MAMP/htdocs/fairwayghana"
+		},
+		{
+			"path": "/Applications/MAMP/htdocs/avnash-main-website"
+		},
+		{
+			"path": "/Applications/MAMP/htdocs/avnash-recipes"
+		},
+		{
+			"path": "/Applications/MAMP/htdocs/blue_blossom"
+		},
+		{
+			"path": "/Applications/MAMP/htdocs/electroland-v2.1"
+		},
+		{
+			"path": "/Users/dari/Downloads/mrblinks-whitelist"
+		}
+	],
+    "settings": {
+        "liveServer.settings.multiRootWorkspaceName": "Fidelity"
+    }
+}

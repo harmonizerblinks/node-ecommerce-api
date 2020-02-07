@@ -14,6 +14,12 @@ const path = require('path');
 const swaggerJsDoc = require('swagger-jsdoc');
 const swaggerUi = require('swagger-ui-express');
 
+var morgan = require('morgan');
+const processImage = require('express-processimage');
+
+const fs = require("fs");
+const Sharp = require('sharp');
+
 // initialize the app
 const app = express();
 
@@ -34,7 +40,8 @@ mongoose.set('useFindAndModify', false);
 
 // Connecting to the database
 mongoose.connect(Config.url)
-    .then(() => {
+    .then((data) => {
+        // console.log(data);
         console.log("Successfully connected to MongoDB.");
     }).catch(err => {
         console.log('Could not connect to MongoDB.');
@@ -46,15 +53,52 @@ app.use(cors());
 
 app.use(fileUpload({
     limits: { fileSize: 50 * 1024 * 1024 },
-    // useTempFiles: true,
-    // tempFileDir: '/tmp/'
+    useTempFiles: true,
+    tempFileDir: '/tmp/'
 }));
 
 // Body Parser
 app.use(express.json({ limit: '30mb' })); // Body limit is 30Mb
 
 // Set the static folder
-app.use('/public', express.static(path.join(__dirname, '../public')))
+// const resize = require('./middleware/resize.js');
+
+// app.use('/public/items/:img', resize.resizeImage);
+// const Media = require('./middleware/image_render.js');
+
+// app.get('/public/items/:img', (req, res) => {
+//     if (req.params.img) {
+//         console.log(req._parsedUrl.pathname);
+//         // const img = 'public/items/' + req.params.img;
+//         // console.log(img);
+//         let image = new Media(req._parsedUrl.pathname);
+//         image.thumb(req, res);
+//     } else {
+//         res.sendStatus(403);
+//     }
+// });
+// console.log(__dirname)
+let root = path.join(__dirname, '../public')
+app.use(morgan('dev'));
+// app.use(processImage({ root: root })); //New line
+// app.use(express.static('public'));
+app.use(processImage({ root: root }));
+
+app.set('view engine', 'jade');
+app.set('port', PORT);
+
+app.use('/public', express.static(path.join(__dirname, '../public')));
+// image resizer library
+// const resizer = require('resize-as-a-service');
+// const conf = {
+//     imagesFolder: path.resolve(__dirname, 'public', 'resized'),
+//     originalsFolder: path.resolve(__dirname, 'public', 'items'),
+//     apiRoute: '/api'
+// };
+// app.use('/public', resizer.create(conf))
+//     .use(function(req, res) {
+//         res.end('You probably thought this was a path to a real image... Nope. Chuck Testa!');
+//     });
 
 // Bodyparser Middleware
 // app.use(bodyParser.json({ limit: '10kb' }));
@@ -111,6 +155,10 @@ const swaggerDocs = swaggerJsDoc(swaggerOptions);
 
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocs));
 
+app.get('/public', function(req, res, next) {
+    res.render('index');
+});
+
 // Handler for 404 - Resource Not Found
 app.use((req, res, next) => {
     res.status(404).send({ message: 'We think you are lost!' });
@@ -124,8 +172,8 @@ app.use((err, req, res, next) => {
 });
 
 // Create a Server
-var server = app.listen(PORT, function() {
-
+var server = app.listen(PORT, function(data) {
+    console.log(data);
     var host = server.address().address
     var port = server.address().port
 
