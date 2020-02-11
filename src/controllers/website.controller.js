@@ -240,7 +240,7 @@ exports.findAllCategorys = async(req, res) => {
             as: "products"
         }
     }, ];
-    await Category.find(query)
+    await Category.aggregate(query)
         .then(categorys => {
             res.send(categorys);
         }).catch(err => {
@@ -262,7 +262,7 @@ exports.findCategoryById = async(req, res) => {
         },
         { $match: { _id: ObjectId(req.params.categoryId) } }
     ];
-    await Category.findById(query)
+    await Category.aggregate(query)
         .then(categorys => {
             res.send(categorys[0]);
         }).catch(err => {
@@ -312,7 +312,7 @@ exports.findAllProducts = async(req, res) => {
 
 // FETCH all Products by CategoryId
 exports.findAllProductsByCategory = async(req, res) => {
-    let query = { categoryid: { $in: req.params.categoryId } };
+    let query = { categoryid: req.params.categoryId };
     await Product.find(query)
         .then(products => {
             res.send(products);

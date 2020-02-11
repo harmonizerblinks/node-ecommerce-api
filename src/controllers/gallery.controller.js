@@ -29,9 +29,11 @@ exports.create = async(req, res) => {
             // console.log(err);
             return res.status(500).send(err);
         }
-        const imageurl = req.params.type + '/' + fname;
+        var imageurl = req.params.type + '/' + fname;
         if (req.params.type === 'items') {
-            imageurl = req.params.type + '/resize_' + fname
+
+            imageurl = req.params.type + '/resize_' + fname;
+
             sharp(name).resize({ width: 500, height: 500 }).toFile(destination).then((data) => {
                 // fs.unlinkSync();
                 console.log(data);
