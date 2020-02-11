@@ -29,7 +29,9 @@ exports.create = async(req, res) => {
             // console.log(err);
             return res.status(500).send(err);
         }
+        const imageurl = req.params.type + '/' + fname;
         if (req.params.type === 'items') {
+            imageurl = req.params.type + '/resize_' + fname
             sharp(name).resize({ width: 500, height: 500 }).toFile(destination).then((data) => {
                 // fs.unlinkSync();
                 console.log(data);
@@ -39,7 +41,7 @@ exports.create = async(req, res) => {
         }
         // console.log(result);
         // Create a Gallery
-        const gallery = new Gallery({ name: fname, imageurl: config.app + req.params.type + '/resize_' + fname });
+        const gallery = new Gallery({ name: fname, imageurl: imageurl });
 
         // Save a Gallery in the MongoDB
         gallery.save()

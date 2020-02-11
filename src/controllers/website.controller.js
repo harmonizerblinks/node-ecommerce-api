@@ -12,15 +12,11 @@ const Branch = require('../models/branch.model.js');
 
 
 // POST a Category
-exports.create = (req, res) => {
+exports.getFeaturedCategory = async(req, res) => {
     // console.log(req.body);
-    // Create a Category
-    const customer = new Customer(req.body);
-
-    // Save a Category in the MongoDB
-    customer.save()
-        .then(data => {
-            res.send(data);
+    await Category.find({ featured: true })
+        .then(categorys => {
+            res.send(categorys);
         }).catch(err => {
             res.status(500).send({
                 message: err.message
@@ -191,7 +187,7 @@ exports.findBrandCategoryProducts = (req, res) => {
                     //             message: err.message
                     //         });
                     //     });
-                    res.send(categorys);
+                    res.send(categorys[0]);
                 }).catch(err => {
                     res.status(500).send({
                         message: err.message
@@ -236,7 +232,15 @@ exports.findAllBrandProducts = async(req, res) => {
 
 // FETCH all Category
 exports.findAllCategorys = async(req, res) => {
-    await Category.find()
+    let query = [{
+        $lookup: {
+            from: "products",
+            localField: "productid",
+            foreignField: "_id",
+            as: "products"
+        }
+    }, ];
+    await Category.find(query)
         .then(categorys => {
             res.send(categorys);
         }).catch(err => {
@@ -248,9 +252,19 @@ exports.findAllCategorys = async(req, res) => {
 
 // FETC Category By Id
 exports.findCategoryById = async(req, res) => {
-    await Category.findById(req.params.categoryId)
+    let query = [{
+            $lookup: {
+                from: "products",
+                localField: "productid",
+                foreignField: "_id",
+                as: "products"
+            }
+        },
+        { $match: { _id: ObjectId(req.params.categoryId) } }
+    ];
+    await Category.findById(query)
         .then(categorys => {
-            res.send(categorys);
+            res.send(categorys[0]);
         }).catch(err => {
             res.status(500).send({
                 message: err.message
@@ -298,7 +312,7 @@ exports.findAllProducts = async(req, res) => {
 
 // FETCH all Products by CategoryId
 exports.findAllProductsByCategory = async(req, res) => {
-    let query = { categoryid: req.params.categoryId };
+    let query = { categoryid: { $in: req.params.categoryId } };
     await Product.find(query)
         .then(products => {
             res.send(products);

@@ -3,10 +3,10 @@ module.exports = function(app) {
     var website = require('../controllers/website.controller.js');
 
     // Create a new Order
-    app.post('/api/website', website.create);
+    // app.post('/api/website', website.getFeaturedCategory);
 
     // Retrieve all Categories and Products
-    app.get('/api/website', website.findAllProducts);
+    app.get('/api/website', website.getFeaturedCategory);
 
     // Retrieve all Blogs
     app.get('/api/website/blogs', website.findAllBlogs);
@@ -21,7 +21,7 @@ module.exports = function(app) {
     app.get('/api/website/category/all', website.findAllCategoryProducts);
 
     // Retrieve all Products by CategoryId
-    app.get('/api/website/category/:categoryId', website.findAllProductsByCategory);
+    app.get('/api/website/category/:categoryId', website.findCategoryById);
 
     // Retrieve all Products by CategoryId
     app.get('/api/website/category/products/:categoryId', website.findAllProductsByCategory);
