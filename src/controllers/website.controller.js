@@ -179,15 +179,8 @@ exports.findBrandCategoryProducts = (req, res) => {
             // let querys = { brandid: brand._id, categoryid: req.params.categoryId };
             await Category.aggregate(que)
                 .then(async(categorys) => {
-                    // await Category.aggregate(que)
-                    //     .then((categor) => {
-                    //         res.send(categor);
-                    //     }).catch(err => {
-                    //         res.status(500).send({
-                    //             message: err.message
-                    //         });
-                    //     });
-                    res.send(categorys[0]);
+                    var cats = await arrayRemoveBrandId(categorys[0], brand._id);
+                    res.send(cats);
                 }).catch(err => {
                     res.status(500).send({
                         message: err.message
@@ -349,4 +342,10 @@ async function asyncForEach(array, callback) {
     for (let index = 0; index < array.length; index++) {
         await callback(array[index], index, array);
     }
+}
+
+async function arrayRemoveBrandId(arr, val) {
+    return arr.filter((ele) => {
+        return ele.brandid != val;;
+    });
 }
