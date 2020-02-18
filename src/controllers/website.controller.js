@@ -179,8 +179,9 @@ exports.findBrandCategoryProducts = (req, res) => {
             // let querys = { brandid: brand._id, categoryid: req.params.categoryId };
             await Category.aggregate(que)
                 .then(async(categorys) => {
-                    var cats = await arrayRemoveBrandId(categorys[0], brand._id);
-                    res.send(cats);
+                    categorys[0].products = await arrayRemoveBrandId(categorys[0].products, brand._id);
+
+                    res.send(categorys[0]);
                 }).catch(err => {
                     res.status(500).send({
                         message: err.message
@@ -318,22 +319,23 @@ exports.findAllProductsByCategory = async(req, res) => {
 
 // FIND a Category
 exports.findOne = (req, res) => {
-    Category.findById(req.params.categoryId)
-        .then(category => {
-            if (!category) {
+    console.log(req.params.productId);
+    Product.findById(req.params.productId)
+        .then(product => {
+            if (!product) {
                 return res.status(404).send({
-                    message: "Category not found with id " + req.params.categoryId
+                    message: "Product not found with id " + req.params.productId
                 });
             }
-            res.send(category);
+            res.send(product);
         }).catch(err => {
             if (err.kind === 'ObjectId') {
                 return res.status(404).send({
-                    message: "Category not found with id " + req.params.categoryId
+                    message: "Product not found with id " + req.params.productId
                 });
             }
             return res.status(500).send({
-                message: "Error retrieving Category with id " + req.params.categoryId
+                message: "Error retrieving Product with id " + req.params.productId
             });
         });
 };
@@ -346,6 +348,7 @@ async function asyncForEach(array, callback) {
 
 async function arrayRemoveBrandId(arr, val) {
     return arr.filter((ele) => {
+        console.log(ele.brandid, val);
         return ele.brandid != val;;
     });
 }

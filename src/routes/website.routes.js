@@ -39,6 +39,6 @@ module.exports = function(app) {
     app.get('/api/website/brands/:name/:categoryId', website.findBrandCategoryProducts);
 
     // Retrieve a single Website by Id
-    app.get('/api/website/:productid', website.findOne);
+    app.get('/api/website/:productId', website.findOne);
 
 }
