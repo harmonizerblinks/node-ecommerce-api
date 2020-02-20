@@ -119,7 +119,7 @@ exports.findBrandPromotions = (req, res) => {
                 as: "products"
             }
         },
-        { $match: { _id: ObjectId(req.params.brandid) } }
+        { $match: { _id: ObjectId(req.params.brandId) } }
     ];
     // let query = { name: req.params.name };
     Brand.aggregate(query)
