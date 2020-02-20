@@ -29,6 +29,9 @@ module.exports = function(app) {
     // Retrieve all Products
     app.get('/api/website/products', website.findAllProducts);
 
+    // Retrieve all Products
+    app.get('/api/website/promotions/:brandId', website.findBrandPromotions);
+
     // Retrieve all Branches
     app.get('/api/website/branches', website.findAllBranch);
 
