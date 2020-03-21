@@ -96,7 +96,7 @@ exports.findBrandByName = (req, res) => {
             //     res.send(brand);
             // }
             // start();
-            res.send(brand);
+            res.send(brand[0]);
         }).catch(err => {
             if (err.kind === 'ObjectId') {
                 return res.status(404).send({

@@ -7,6 +7,7 @@ const ProductSizesSchema = mongoose.Schema({
     code: { type: String, required: true },
     imageurl: { type: String, required: false },
     amount: { type: String, required: true, default: 0 },
+    link: { type: String, required: false, default: 'https://electrolandgh.com' },
     default: { type: Boolean, required: false, default: false },
     status: { type: Boolean, required: true, default: true },
     created: { type: Date, index: true, default: Date.now },

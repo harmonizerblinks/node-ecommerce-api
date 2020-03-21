@@ -59,9 +59,21 @@
 		},
 		{
 			"path": "/Applications/MAMP/htdocs/preorder"
+		},
+		{
+			"path": "/Applications/MAMP/htdocs/receiptsystem"
+		},
+		{
+			"path": "/Applications/MAMP/htdocs/qsi"
+		},
+		{
+			"path": "/Applications/MAMP/htdocs/extrail"
+		},
+		{
+			"path": "/Users/dari/Downloads/download"
 		}
 	],
     "settings": {
-        "liveServer.settings.multiRootWorkspaceName": "Fidelity"
+        "liveServer.settings.multiRootWorkspaceName": "Angular"
     }
 }
