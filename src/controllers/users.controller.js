@@ -169,7 +169,7 @@ exports.findOneByUsername = (req, res) => {
 // UPDATE a User
 exports.update = (req, res) => {
     var user = req.body;
-    user.updated = Date.now;
+    user.updated = new Date();
     // Find user and update it
     console.log(req.body)
     User.findByIdAndUpdate(req.params.userId, user, { new: true })
