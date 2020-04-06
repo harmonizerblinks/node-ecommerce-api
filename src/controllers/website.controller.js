@@ -14,7 +14,7 @@ const Branch = require('../models/branch.model.js');
 // POST a Category
 exports.getFeaturedCategory = async(req, res) => {
     // console.log(req.body);
-    await Category.find({ featured: true })
+    await Category.find({ featured: true }).sort({ sort: 1 })
         .then(categorys => {
             res.send(categorys);
         }).catch(err => {

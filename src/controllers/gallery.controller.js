@@ -20,8 +20,11 @@ exports.create = async(req, res) => {
     // The name of the input field (i.e. "gallery") is used to retrieve the uploaded file
     const file = req.files.file;
     const fname = new Date().getTime() + file.name.replace(/ /g, "_");
-    const name = appRoot + '/../public/original/' + fname;
+    const name = appRoot + '/../public/' + req.params.type + '/' + fname;
     const destination = appRoot + '/../public/' + req.params.type + '/resize_' + fname;
+    if (req.params.type === 'items') {
+        name = appRoot + '/../public/original/' + fname;
+    }
     console.log(name);
     // Use the mv() method to place the file somewhere on your server
     file.mv(name, function(err) {
