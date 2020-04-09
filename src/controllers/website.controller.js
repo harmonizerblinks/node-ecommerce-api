@@ -234,7 +234,7 @@ exports.findAllCategorys = async(req, res) => {
             as: "products"
         }
     }, ];
-    await Category.aggregate(query)
+    await Category.aggregate(query).sort({ sort: 1 })
         .then(categorys => {
             res.send(categorys);
         }).catch(err => {
