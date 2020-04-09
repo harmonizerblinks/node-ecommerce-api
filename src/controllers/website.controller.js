@@ -40,7 +40,7 @@ exports.findAllBranch = async(req, res) => {
 // FETCH all Brand
 exports.findAllBrands = async(req, res) => {
     console.info('getting all Brands')
-    await Brands.find()
+    await Brands.find().sort({ sort: 1 })
         .then(brands => {
             res.send(brands);
         }).catch(err => {
@@ -53,7 +53,19 @@ exports.findAllBrands = async(req, res) => {
 
 // FETCH all Blogs
 exports.findAllBlogs = async(req, res) => {
-    await Blog.find()
+    await Blog.find().sort({ created: -1 })
+        .then(blogs => {
+            res.send(blogs);
+        }).catch(err => {
+            res.status(500).send({
+                message: err.message
+            });
+        });
+};
+
+// FETCH Single Blogs
+exports.findAllBlogById = async(req, res) => {
+    await Blog.findById(req.params.blogId)
         .then(blogs => {
             res.send(blogs);
         }).catch(err => {
@@ -76,7 +88,7 @@ exports.findBrandByName = (req, res) => {
         { $match: { name: req.params.name } }
     ];
     // let query = { name: req.params.name };
-    Brand.aggregate(query)
+    Brand.aggregate(query).sort({ sort: 1 })
         .then(async(brand) => {
             if (!brand) {
                 return res.status(404).send({
@@ -122,7 +134,7 @@ exports.findBrandPromotions = (req, res) => {
         { $match: { _id: ObjectId(req.params.brandId) } }
     ];
     // let query = { name: req.params.name };
-    Brand.aggregate(query)
+    Brand.aggregate(query).sort({ sort: 1 })
         .then(brand => {
             if (!brand) {
                 return res.status(404).send({
@@ -155,7 +167,7 @@ exports.findBrandPromotions = (req, res) => {
 // FIND a Brand by name and Include Categories
 exports.findBrandCategoryProducts = (req, res) => {
     let query = { name: req.params.name };
-    Brand.findOne(query)
+    Brand.findOne(query).sort({ sort: 1 })
         .then(async(brand) => {
             if (!brand) {
                 return res.status(404).send({
@@ -203,7 +215,7 @@ exports.findBrandCategoryProducts = (req, res) => {
 // FETCH all Brand With their Products
 exports.findAllBrandProducts = async(req, res) => {
     console.log('fine All');
-    await Brand.find()
+    await Brand.find().sort({ sort: 1 })
         .then(async(brands) => {
             const start = async() => {
                 const result = [];
