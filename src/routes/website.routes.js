@@ -11,7 +11,7 @@ module.exports = function(app) {
     // Retrieve all Blogs
     app.get('/api/website/blogs', website.findAllBlogs);
     // Retrieve Single Blog
-    app.get('/api/website/blog', website.findAllBlogs);
+    app.get('/api/website/blogs/:blogId', website.findAllBlogById);
 
     // Retrieve all Categories
     app.get('/api/website/brands', website.findAllBrands);
