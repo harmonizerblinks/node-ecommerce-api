@@ -32,6 +32,7 @@ const ProductImagesSchema = mongoose.Schema({
 
 const ProductFeaturesSchema = mongoose.Schema({
     name: { type: String, required: false },
+    icon: { type: String, required: true },
     imageurl: { type: String, required: true },
     featured: { type: Boolean, required: true, default: false },
     created: { type: Date, index: true, default: Date.now },
@@ -54,7 +55,7 @@ const ProductSchema = mongoose.Schema({
     images: { type: [ProductImagesSchema], required: false },
     categoryid: { type: [Schema.Types.ObjectId], ref: 'category', index: true, required: true },
     //categoryids: { type: [Schema.Types.ObjectId], ref: 'category', required: true },
-    category: { type: [ProductCategorySchema], required: false },
+    // category: { type: [ProductCategorySchema], required: false },
     brandid: { type: Schema.Types.ObjectId, ref: 'brand', required: false },
     productid: { type: [Schema.Types.ObjectId], ref: 'product', required: false, default: [] },
     // brand: { type: ProductBrandSchema, required: false },

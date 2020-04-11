@@ -95,20 +95,25 @@ exports.findBrandByName = (req, res) => {
                     message: "Brand not found with Name " + req.params.name
                 });
             }
+            console.log(brand[0].categoryid);
+            let catquery = [
+                { $match: { _id: { $in: brand[0].categoryid } } }
+            ];
             // console.log(brand)
             // var result = db.users.findOne({"name":"Tom Benzamin"},{"address_ids":1})
-            // const start = async() => {
-            //     const categories = [];
-            //     await asyncForEach(brand.categoryid, async(c) => {
-            //         const category = await Category.findById(c);
-            //         categories.push(category);
-            //     });
-            //     // console.log('Done');
-            //     brand.categorys = categories;
-            //     res.send(brand);
-            // }
-            // start();
-            res.send(brand[0]);
+            const start = async() => {
+                Category.aggregate(catquery).sort({ sort: 1 })
+                    .then(async(cats) => {
+                        // await asyncForEach(cats, async(p) => {
+                        //     var products = await arrayRemoveBrandId(p.products, brand[0]._id);
+                        //     console.log(products);
+                        // });
+                        brand[0].categories = cats;
+                        res.send(brand[0]);
+                    })
+            }
+            start();
+            // res.send(brand[0]);
         }).catch(err => {
             if (err.kind === 'ObjectId') {
                 return res.status(404).send({
@@ -178,9 +183,7 @@ exports.findBrandCategoryProducts = (req, res) => {
             let que = [{
                     $lookup: {
                         from: "products",
-                        // pipeline: [
-                        //     { $match: { _id: brand._id } },
-                        // ],
+                        // let: { brandid: brand._id, productid: "$productid" },
                         localField: "productid",
                         foreignField: "_id",
                         as: "products"
@@ -190,10 +193,23 @@ exports.findBrandCategoryProducts = (req, res) => {
             ];
             // let querys = { brandid: brand._id, categoryid: req.params.categoryId };
             await Category.aggregate(que)
-                .then(async(categorys) => {
-                    categorys[0].products = await arrayRemoveBrandId(categorys[0].products, brand._id);
+                .then(async(category) => {
+                    // category[0].products = await arrayRemoveBrandId(category[0].products, brand._id);
+                    // console.log(category);
+                    let querys = [{
+                        $match: { _id: { $in: category[0].productid }, brandid: ObjectId(brand._id) }
+                    }];
+                    await Product.aggregate(querys)
+                        .then(async(products) => {
+                            category[0].products = products;
+                            res.send(category[0]);
+                        }).catch(err => {
+                            res.status(500).send({
+                                message: err.message
+                            });
+                        });
 
-                    res.send(categorys[0]);
+                    // res.send(category[0]);
                 }).catch(err => {
                     res.status(500).send({
                         message: err.message
@@ -359,8 +375,8 @@ async function asyncForEach(array, callback) {
 }
 
 async function arrayRemoveBrandId(arr, val) {
-    return arr.filter((ele) => {
+    return await arr.filter((ele) => {
         console.log(ele.brandid, val);
-        return ele.brandid != val;;
+        return ele.brandid == val;;
     });
 }
