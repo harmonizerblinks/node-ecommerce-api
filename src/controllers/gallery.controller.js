@@ -20,11 +20,11 @@ exports.create = async(req, res) => {
     // The name of the input field (i.e. "gallery") is used to retrieve the uploaded file
     const file = req.files.file;
     const fname = new Date().getTime() + file.name.replace(/ /g, "_");
-    const name = appRoot + '/../public/' + req.params.type + '/' + fname;
-    const destination = appRoot + '/../public/' + req.params.type + '/resize_' + fname;
-    if (req.params.type === 'items') {
-        name = appRoot + '/../public/original/' + fname;
-    }
+    const name = appRoot + '/public/' + req.params.type + '/' + fname;
+    // const destination = appRoot + '/../public/' + req.params.type + '/resize_' + fname;
+    // if (req.params.type === 'items') {
+    //     name = appRoot + '/../public/original/' + fname;
+    // }
     console.log(name);
     // Use the mv() method to place the file somewhere on your server
     file.mv(name, function(err) {
@@ -33,17 +33,17 @@ exports.create = async(req, res) => {
             return res.status(500).send(err);
         }
         var imageurl = req.params.type + '/' + fname;
-        if (req.params.type === 'items') {
+        // if (req.params.type === 'items') {
 
-            imageurl = req.params.type + '/resize_' + fname;
+        //     imageurl = req.params.type + '/resize_' + fname;
 
-            sharp(name).resize({ width: 500, height: 500 }).toFile(destination).then((data) => {
-                // fs.unlinkSync();
-                console.log(data);
-            }).catch((err) => {
-                console.log(err);
-            });
-        }
+        //     sharp(name).resize({ width: 500, height: 500 }).toFile(destination).then((data) => {
+        //         // fs.unlinkSync();
+        //         console.log(data);
+        //     }).catch((err) => {
+        //         console.log(err);
+        //     });
+        // }
         // console.log(result);
         // Create a Gallery
         const gallery = new Gallery({ name: fname, imageurl: imageurl });
