@@ -78,7 +78,7 @@ app.use(express.json({ limit: '30mb' })); // Body limit is 30Mb
 //     }
 // });
 // console.log(__dirname)
-let root = path.join(__dirname, '../public')
+let root = path.join(__dirname, '/public')
 app.use(morgan('dev'));
 // app.use(processImage({ root: root })); //New line
 // app.use(express.static('public'));
@@ -87,7 +87,7 @@ app.use(processImage({ root: root }));
 app.set('view engine', 'jade');
 app.set('port', PORT);
 
-app.use('/public', express.static(path.join(__dirname, '../public')));
+app.use('/public', express.static(path.join(__dirname, '/public')));
 // image resizer library
 // const resizer = require('resize-as-a-service');
 // const conf = {
