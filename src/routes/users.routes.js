@@ -2,7 +2,6 @@ module.exports = function(app) {
 
     var users = require('../controllers/users.controller.js');
     const verify = require('../middleware/verifyJwtToken.middleware.js');
-    const passport = require('passport');
 
     // Create a new User
     app.post('/api/users', verify.verifyToken, users.create);

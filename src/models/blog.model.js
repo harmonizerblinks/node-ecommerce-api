@@ -3,6 +3,7 @@ const mongoose = require('mongoose'),
 const uniqueValidator = require('mongoose-unique-validator');
 
 const BlogSchema = mongoose.Schema({
+    code: { type: String, required: true, default: '' },
     title: { type: String, required: true },
     postedby: { type: String, required: false },
     imageurl: { type: String, required: false, default: 'banner/1585935825413laundry.jpg' },
@@ -10,7 +11,7 @@ const BlogSchema = mongoose.Schema({
     categoryid: { type: String, required: false },
     category: { type: String, required: false },
     description: { type: String, required: true },
-    content: { type: String, required: true },
+    content: { type: Schema.Types.Mixed, required: true },
     status: { type: Boolean, required: true, default: true },
     likes: { type: [String], required: false, default: [] },
     views: { type: [String], required: false, default: [] },

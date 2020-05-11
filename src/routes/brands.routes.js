@@ -1,7 +1,7 @@
 module.exports = function(app) {
 
     var brands = require('../controllers/brands.controller.js');
-    const passport = require('passport');
+    // const passport = require('passport');
 
     // Create a new Brand
     app.post('/api/brands', brands.create);

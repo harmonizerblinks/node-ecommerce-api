@@ -2,10 +2,13 @@ const Blog = require('../models/blog.model.js');
 
 
 // POST a Blog
-exports.create = (req, res) => {
+exports.create = async(req, res) => {
     // console.log(req.body);
     // Create a Blog
     const blog = new Blog(req.body);
+    blog.code = null;
+    var code = blog.title.toLowerCase();
+    blog.code = code.replace(/\s+/g, '-') + '-' + await generateOTP(6);
 
     // Save a Blog in the MongoDB
     blog.save()
@@ -102,3 +105,18 @@ exports.delete = (req, res) => {
             });
         });
 };
+
+
+async function generateOTP(length) {
+    var digits = '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+
+    var otpLength = length;
+    var otp = '';
+
+    for (let i = 1; i <= otpLength; i++) {
+        var index = Math.floor(Math.random() * (digits.length));
+
+        otp = otp + digits[index];
+    }
+    return otp.toUpperCase();
+}

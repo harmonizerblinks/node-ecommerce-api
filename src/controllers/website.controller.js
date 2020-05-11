@@ -53,7 +53,7 @@ exports.findAllBrands = async(req, res) => {
 
 // FETCH all Blogs
 exports.findAllBlogs = async(req, res) => {
-    await Blog.find().sort({ created: -1 })
+    await Blog.find({ status: true }).sort({ created: -1 })
         .then(blogs => {
             res.send(blogs);
         }).catch(err => {

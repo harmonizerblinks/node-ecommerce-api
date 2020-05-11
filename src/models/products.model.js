@@ -31,8 +31,8 @@ const ProductImagesSchema = mongoose.Schema({
 });
 
 const ProductFeaturesSchema = mongoose.Schema({
-    name: { type: String, required: false },
-    icon: { type: String, required: true },
+    name: { type: String, required: true },
+    icon: { type: String, required: false },
     imageurl: { type: String, required: true },
     featured: { type: Boolean, required: true, default: false },
     created: { type: Date, index: true, default: Date.now },

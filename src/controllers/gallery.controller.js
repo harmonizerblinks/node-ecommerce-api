@@ -1,7 +1,7 @@
 const Gallery = require('../models/gallery.model.js');
 const config = require('../config/mongodb.config.js');
 var path = require('path');
-const sharp = require('sharp');
+// const sharp = require('sharp');
 const fs = require('fs');
 var appDir = path.dirname(require.main.filename);
 
@@ -21,10 +21,6 @@ exports.create = async(req, res) => {
     const file = req.files.file;
     const fname = new Date().getTime() + file.name.replace(/ /g, "_");
     const name = appRoot + '/public/' + req.params.type + '/' + fname;
-    // const destination = appRoot + '/../public/' + req.params.type + '/resize_' + fname;
-    // if (req.params.type === 'items') {
-    //     name = appRoot + '/../public/original/' + fname;
-    // }
     console.log(name);
     // Use the mv() method to place the file somewhere on your server
     file.mv(name, function(err) {
@@ -33,18 +29,6 @@ exports.create = async(req, res) => {
             return res.status(500).send(err);
         }
         var imageurl = req.params.type + '/' + fname;
-        // if (req.params.type === 'items') {
-
-        //     imageurl = req.params.type + '/resize_' + fname;
-
-        //     sharp(name).resize({ width: 500, height: 500 }).toFile(destination).then((data) => {
-        //         // fs.unlinkSync();
-        //         console.log(data);
-        //     }).catch((err) => {
-        //         console.log(err);
-        //     });
-        // }
-        // console.log(result);
         // Create a Gallery
         const gallery = new Gallery({ name: fname, imageurl: imageurl });
 
@@ -107,12 +91,10 @@ exports.upload = async(req, res) => {
     });
 };
 
-
-
 // FETCH all Gallerys
 exports.findAll = (req, res) => {
     console.log('fine All');
-    Gallery.find()
+    Gallery.find().sort({ created: -1 })
         .then(gallerys => {
             // console.log(gallerys)
             res.send(gallerys);
@@ -122,7 +104,6 @@ exports.findAll = (req, res) => {
             });
         });
 };
-
 
 // FIND a Gallery
 exports.findOne = (req, res) => {
@@ -181,7 +162,18 @@ exports.delete = (req, res) => {
                     message: "Gallery not found with id " + req.params.galleryId
                 });
             }
-            res.send({ message: "Gallery deleted successfully!" });
+            const name = appRoot + '/public/' + gallery.imageurl;
+            // delete file named Synchronously
+            // fs.unlinkSync(name);
+            fs.unlink(name, (err) => {
+                if (err) {
+                    console.error(err)
+                    return
+                }
+
+                //file removed
+            })
+            res.send({ message: "Image deleted successfully!" });
         }).catch(err => {
             if (err.kind === 'ObjectId' || err.name === 'NotFound') {
                 return res.status(404).send({

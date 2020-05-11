@@ -25,10 +25,7 @@ const PORT = process.env.PORT || 4000;
 const server = http.createServer(app);
 
 // Start Server using environment port
-server.listen(PORT, (data) => {
-    console.log(data);
-    console.info('Server is running on ' + PORT)
-});
+server.listen(PORT);
 
 // Configuring the database
 const Config = require('./src/config/mongodb.config');
