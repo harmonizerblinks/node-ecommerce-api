@@ -9,6 +9,7 @@ const BrandSchema = mongoose.Schema({
     banner: { type: String, required: true },
     imageurl: { type: String, required: false },
     blog_image: { type: String, required: false },
+    featured: { type: Boolean, required: true, default: true },
     promotion_image: { type: String, required: false },
     promotion: { type: Boolean, required: false },
     description: { type: String, minlength: 10, required: false },

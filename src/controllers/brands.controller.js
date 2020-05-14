@@ -18,7 +18,6 @@ exports.create = (req, res) => {
         });
 };
 
-
 // FETCH all Brands
 exports.findAll = (req, res) => {
     console.log('fine All');

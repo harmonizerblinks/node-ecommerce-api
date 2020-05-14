@@ -50,6 +50,19 @@ exports.findAllBrands = async(req, res) => {
         });
 };
 
+// FETCH all Brand
+exports.findAllFeaturedBrands = async(req, res) => {
+    console.info('getting all Brands')
+    await Brands.find({ featured: true }).sort({ sort: 1 })
+        .then(brands => {
+            res.send(brands);
+        }).catch(err => {
+            res.status(500).send({
+                message: err.message
+            });
+        });
+};
+
 
 // FETCH all Blogs
 exports.findAllBlogs = async(req, res) => {
@@ -65,7 +78,7 @@ exports.findAllBlogs = async(req, res) => {
 
 // FETCH Single Blogs
 exports.findAllBlogById = async(req, res) => {
-    await Blog.findById(req.params.blogId)
+    await Blog.findOne({ code: req.params.blogId })
         .then(blogs => {
             res.send(blogs);
         }).catch(err => {

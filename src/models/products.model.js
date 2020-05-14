@@ -34,6 +34,7 @@ const ProductFeaturesSchema = mongoose.Schema({
     name: { type: String, required: true },
     icon: { type: String, required: false },
     imageurl: { type: String, required: true },
+    description: { type: String, required: true, default: 'the is a default Featured Description' },
     featured: { type: Boolean, required: true, default: false },
     created: { type: Date, index: true, default: Date.now },
 });
@@ -42,6 +43,12 @@ const ProductCategorySchema = mongoose.Schema({
     name: { type: String, required: true },
     imageurl: { type: String, required: true },
     description: String,
+    created: { type: Date, index: true, default: Date.now }
+});
+
+const ProductSpecSchema = mongoose.Schema({
+    name: { type: String, required: true },
+    details: { type: String, required: true },
     created: { type: Date, index: true, default: Date.now }
 });
 
@@ -59,7 +66,6 @@ const ProductSchema = mongoose.Schema({
     brandid: { type: Schema.Types.ObjectId, ref: 'brand', required: false },
     productid: { type: [Schema.Types.ObjectId], ref: 'product', required: false, default: [] },
     // brand: { type: ProductBrandSchema, required: false },
-    features: { type: [ProductFeaturesSchema], required: false },
     short_description: { type: String, required: false, index: true, default: '' },
     description: { type: String, required: false, default: '' },
     additional_attributes: { type: String },
@@ -69,7 +75,9 @@ const ProductSchema = mongoose.Schema({
     amount: { type: String, required: true, default: 0 },
     weight: { type: String, required: false },
     sizes: { type: [ProductSizesSchema], required: false },
+    specs: { type: [ProductSpecSchema], required: false },
     colors: { type: [ProductColorsSchema], required: false },
+    features: { type: [ProductFeaturesSchema], required: false },
     link: { type: String, required: true, default: 'https://electrolandgh.com' },
     status: { type: Boolean, required: true, default: true },
     discount: { type: Boolean, required: true, default: false },

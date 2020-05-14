@@ -14,13 +14,19 @@ module.exports = function(app) {
     app.get('/api/website/blogs/:blogId', website.findAllBlogById);
 
     // Retrieve all Categories
-    app.get('/api/website/brands', website.findAllBrands);
+    app.get('/api/website/brands', website.findAllFeaturedBrands);
+
+    // Retrieve all Categories
+    app.get('/api/website/brands/all', website.findAllBrands);
 
     // Retrieve all Categories
     app.get('/api/website/category', website.findAllCategorys);
 
     // Retrieve all Categories
-    app.get('/api/website/category/all', website.findAllCategoryProducts);
+    app.get('/api/website/category/all', website.findAllCategorys);
+
+    // Retrieve all Categories
+    // app.get('/api/website/category/all', website.findAllCategoryProducts);
 
     // Retrieve all Products by CategoryId
     app.get('/api/website/category/:categoryId', website.findCategoryById);
