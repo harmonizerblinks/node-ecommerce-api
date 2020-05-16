@@ -59,6 +59,7 @@ const ProductSchema = mongoose.Schema({
     package: { type: Boolean, required: true, default: false },
     imageurl: { type: String, required: true, default: 'https://images.samsung.com/is/image/samsung/africa-en-qled-q900r-row-qa65q900rbkxxa-frontblack-159744995?$PD_GALLERY_L_JPG$' },
     banner: { type: String, required: false },
+    promotion_image: { type: String, required: false },
     images: { type: [ProductImagesSchema], required: false },
     categoryid: { type: [Schema.Types.ObjectId], ref: 'category', index: true, required: true },
     //categoryids: { type: [Schema.Types.ObjectId], ref: 'category', required: true },
