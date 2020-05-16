@@ -8,7 +8,7 @@ var appDir = path.dirname(require.main.filename);
 
 // POST a Gallery
 exports.create = async(req, res) => {
-    console.info('started');
+    console.info('started', req.files);
     if (!req.files || Object.keys(req.files).length === 0) {
         return res.status(400).send({ message: 'No files were uploaded.' });
     }
@@ -19,7 +19,8 @@ exports.create = async(req, res) => {
     console.log(req.files.file);
     // The name of the input field (i.e. "gallery") is used to retrieve the uploaded file
     const file = req.files.file;
-    const fname = new Date().getTime() + file.name.replace(/ /g, "_");
+    // const fname = new Date().getTime() + file.name.replace(/ /g, "_");
+    const fname = await generateOTP(4) + file.name.replace(/ /g, "_");
     const name = appRoot + '/public/' + req.params.type + '/' + fname;
     console.log(name);
     // Use the mv() method to place the file somewhere on your server
@@ -186,6 +187,19 @@ exports.delete = (req, res) => {
         });
 };
 
+async function generateOTP(length) {
+    var digits = '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+
+    var otpLength = length;
+    var otp = '';
+
+    for (let i = 1; i <= otpLength; i++) {
+        var index = Math.floor(Math.random() * (digits.length));
+
+        otp = otp + digits[index];
+    }
+    return otp.toUpperCase();
+}
 
 async function asyncForEach(array, callback) {
     for (let index = 0; index < array.length; index++) {
