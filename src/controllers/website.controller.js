@@ -14,7 +14,7 @@ const Branch = require('../models/branch.model.js');
 // POST a Category
 exports.getFeaturedCategory = async(req, res) => {
     // console.log(req.body);
-    await Category.find({ featured: true }).sort({ sort: 1 })
+    await Category.find({ featured: true, status: true }).sort({ sort: 1 })
         .then(categorys => {
             res.send(categorys);
         }).catch(err => {
@@ -25,9 +25,24 @@ exports.getFeaturedCategory = async(req, res) => {
 };
 
 
+// FETCH all Fliters
+exports.findAll = (req, res) => {
+    console.log('fine All');
+    Fliter.find({ status: true })
+        .then(fliters => {
+            // console.log(fliters)
+            res.send(fliters);
+        }).catch(err => {
+            res.status(500).send({
+                message: err.message
+            });
+        });
+};
+
+
 // FETCH all Brand
 exports.findAllBranch = async(req, res) => {
-    await Branch.find()
+    await Branch.find({ status: true })
         .then(branch => {
             res.send(branch);
         }).catch(err => {
@@ -53,7 +68,7 @@ exports.findAllBrands = async(req, res) => {
 // FETCH all Brand
 exports.findAllFeaturedBrands = async(req, res) => {
     console.info('getting all Brands')
-    await Brands.find({ featured: true }).sort({ sort: 1 })
+    await Brands.find({ featured: true, status: true }).sort({ sort: 1 })
         .then(brands => {
             res.send(brands);
         }).catch(err => {
@@ -98,7 +113,7 @@ exports.findBrandByName = (req, res) => {
                 as: "categories"
             }
         },
-        { $match: { name: req.params.name } }
+        { $match: { name: req.params.name, status: true } }
     ];
     // let query = { name: req.params.name };
     Brand.aggregate(query).sort({ sort: 1 })
@@ -184,7 +199,7 @@ exports.findBrandPromotions = (req, res) => {
 
 // FIND a Brand by name and Include Categories
 exports.findBrandCategoryProducts = (req, res) => {
-    let query = { name: req.params.name };
+    let query = { name: req.params.name, status: true };
     Brand.findOne(query).sort({ sort: 1 })
         .then(async(brand) => {
             if (!brand) {
@@ -202,7 +217,7 @@ exports.findBrandCategoryProducts = (req, res) => {
                         as: "products"
                     }
                 },
-                { $match: { _id: ObjectId(req.params.categoryId) } }
+                { $match: { _id: ObjectId(req.params.categoryId), status: true } }
             ];
             // let querys = { brandid: brand._id, categoryid: req.params.categoryId };
             await Category.aggregate(que)
@@ -210,7 +225,7 @@ exports.findBrandCategoryProducts = (req, res) => {
                     // category[0].products = await arrayRemoveBrandId(category[0].products, brand._id);
                     // console.log(category);
                     let querys = [{
-                        $match: { _id: { $in: category[0].productid }, brandid: ObjectId(brand._id) }
+                        $match: { _id: { $in: category[0].productid }, brandid: ObjectId(brand._id), status: true }
                     }];
                     await Product.aggregate(querys)
                         .then(async(products) => {
@@ -244,7 +259,7 @@ exports.findBrandCategoryProducts = (req, res) => {
 // FETCH all Brand With their Products
 exports.findAllBrandProducts = async(req, res) => {
     console.log('fine All');
-    await Brand.find().sort({ sort: 1 })
+    await Brand.find({ status: true }).sort({ sort: 1 })
         .then(async(brands) => {
             const start = async() => {
                 const result = [];
@@ -295,7 +310,7 @@ exports.findCategoryById = async(req, res) => {
                 as: "products"
             }
         },
-        { $match: { _id: ObjectId(req.params.categoryId) } }
+        { $match: { _id: ObjectId(req.params.categoryId), status: true } }
     ];
     await Category.aggregate(query)
         .then(categorys => {
@@ -335,7 +350,7 @@ exports.findAllCategoryProducts = async(req, res) => {
 // you will explain wat u understand
 // FETCH all Products
 exports.findAllProducts = async(req, res) => {
-    await Product.find()
+    await Product.find({ status: true })
         .then(products => {
             res.send(products);
         }).catch(err => {
@@ -347,7 +362,7 @@ exports.findAllProducts = async(req, res) => {
 
 // FETCH all Products by CategoryId
 exports.findAllProductsByCategory = async(req, res) => {
-    let query = { categoryid: req.params.categoryId };
+    let query = { categoryid: req.params.categoryId, status: true };
     await Product.find(query)
         .then(products => {
             res.send(products);
