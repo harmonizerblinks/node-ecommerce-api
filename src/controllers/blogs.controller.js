@@ -118,5 +118,5 @@ async function generateOTP(length) {
 
         otp = otp + digits[index];
     }
-    return otp.toUpperCase();
+    return otp.toLowerCase();
 }

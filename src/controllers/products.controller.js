@@ -6,6 +6,10 @@ exports.create = (req, res) => {
     // Create a Product
     const product = new Product(req.body);
 
+    product.rout = null;
+    var code = product.name.toLowerCase();
+    product.rout = code.replace(/\s+/g, '-') + '-' + product.code.toLowerCase();
+
     // Save a Product in the MongoDB
     product.save()
         .then(data => {
@@ -87,6 +91,10 @@ exports.update = (req, res) => {
     var body = req.body;
     console.log(body)
     body.updated = new Date();
+    if (!body.rout) {
+        var code = body.name.toLowerCase();
+        body.rout = code.replace(/\s+/g, '-') + '-' + product.code;
+    }
     // Find product and update it
     Product.findByIdAndUpdate(req.params.productId, body, { new: true })
         .then(product => {

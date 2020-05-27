@@ -98,6 +98,7 @@ require('./routes/customers.routes.js')(app);
 require('./routes/brands.routes.js')(app);
 require('./routes/branch.routes.js')(app);
 require('./routes/category.routes.js')(app);
+require('./routes/fliter.routes.js')(app);
 require('./routes/brands.routes.js')(app);
 require('./routes/blogs.routes.js')(app);
 require('./routes/blogs_category.routes.js')(app);

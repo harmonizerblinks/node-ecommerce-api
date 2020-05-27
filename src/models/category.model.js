@@ -11,6 +11,7 @@ const ImageSchema = mongoose.Schema({
 });
 
 const CategorySchema = mongoose.Schema({
+    code: { type: String, index: true, required: true, unique: true },
     name: { type: String, index: true, required: true, unique: true },
     sort: { type: Number, required: false, default: 0 },
     featured: { type: Boolean, required: true, default: true },

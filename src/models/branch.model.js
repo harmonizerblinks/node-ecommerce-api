@@ -6,6 +6,8 @@ const BranchSchema = mongoose.Schema({
     name: { type: String, required: true },
     imageurl: { type: String, required: false },
     loc: { type: [String], required: true },
+    longitude: { type: String, required: true },
+    latitude: { type: String, required: true },
     mapurl: { type: String, required: true },
     mobile: { type: String, required: false },
     email: { type: String, required: false },

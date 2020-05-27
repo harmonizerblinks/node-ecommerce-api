@@ -48,11 +48,13 @@ const ProductCategorySchema = mongoose.Schema({
 
 const ProductSpecSchema = mongoose.Schema({
     name: { type: String, required: true },
+    category: { type: String, required: true },
     details: { type: String, required: true },
     created: { type: Date, index: true, default: Date.now }
 });
 
 const ProductSchema = mongoose.Schema({
+    rout: { type: String, index: true, required: true, unique: true },
     code: { type: String, required: true, index: true, unique: true },
     name: { type: String, required: true, index: true },
     featured: { type: Boolean, required: true, default: true },

@@ -7,7 +7,7 @@ exports.create = async(req, res) => {
     // Create a Fliter
     const fliter = new Fliter(req.body);
     fliter.code = null;
-    var code = fliter.title.toLowerCase();
+    var code = fliter.name.toLowerCase();
     fliter.code = code.replace(/\s+/g, '-') + '-' + await generateOTP(6);
 
     // Save a Fliter in the MongoDB
@@ -25,7 +25,15 @@ exports.create = async(req, res) => {
 // FETCH all Fliters
 exports.findAll = (req, res) => {
     console.log('fine All');
-    Fliter.find()
+    let query = [{
+        $lookup: {
+            from: "categories",
+            localField: "categoryid",
+            foreignField: "_id",
+            as: "categories"
+        }
+    }];
+    Fliter.aggregate(query)
         .then(fliters => {
             // console.log(fliters)
             res.send(fliters);
@@ -118,5 +126,5 @@ async function generateOTP(length) {
 
         otp = otp + digits[index];
     }
-    return otp.toUpperCase();
+    return otp.toLowerCase();
 }
