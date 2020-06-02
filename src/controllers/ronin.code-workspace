@@ -74,6 +74,12 @@
 		},
 		{
 			"path": "/Applications/MAMP/htdocs/signage"
+		},
+		{
+			"path": "/Applications/MAMP/htdocs/double_a"
+		},
+		{
+			"path": "/Applications/MAMP/htdocs/double-a-limited"
 		}
 	],
     "settings": {

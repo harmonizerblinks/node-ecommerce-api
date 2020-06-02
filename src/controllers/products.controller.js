@@ -93,7 +93,7 @@ exports.update = (req, res) => {
     body.updated = new Date();
     if (!body.rout) {
         var code = body.name.toLowerCase();
-        body.rout = code.replace(/\s+/g, '-') + '-' + product.code;
+        body.rout = code.replace(/\s+/g, '-') + '-' + body.code.toLowerCase();
     }
     // Find product and update it
     Product.findByIdAndUpdate(req.params.productId, body, { new: true })
