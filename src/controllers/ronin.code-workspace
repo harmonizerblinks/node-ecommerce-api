@@ -80,9 +80,12 @@
 		},
 		{
 			"path": "/Applications/MAMP/htdocs/double-a-limited"
+		},
+		{
+			"path": "/Applications/MAMP/htdocs/oh"
 		}
 	],
     "settings": {
-        "liveServer.settings.multiRootWorkspaceName": "download"
+        "liveServer.settings.multiRootWorkspaceName": "Angular"
     }
 }
