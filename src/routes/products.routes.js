@@ -8,6 +8,9 @@ module.exports = function(app) {
     // Upload Product
     app.post('/api/products/upload', products.upload);
 
+    // Batch Update Product
+    app.put('/api/products/upload', products.uploadUpdate);
+
     // Retrieve all Product
     app.get('/api/products', products.findAll);
 

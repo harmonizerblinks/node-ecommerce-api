@@ -22,7 +22,7 @@ exports.create = (req, res) => {
 };
 
 // POST a Upload
-exports.upload = (req, res) => {
+exports.upload = async(req, res) => {
     // Get Uploaded Product
     const products = req.body;
     // req.send(products);
@@ -35,6 +35,38 @@ exports.upload = (req, res) => {
                 message: err.message
             });
         });
+};
+
+exports.uploadUpdate = async(req, res) => {
+    // Get Uploaded Product
+    const products = req.body;
+    // req.send(products);
+    // Save Products in the MongoDB
+    const start = async() => {
+        const prods = [];
+        await asyncForEach(products, async(p) => {
+            const product = await Product.findByIdAndUpdate(p._id, {
+                original_amount: p.original_amount,
+                current_amount: p.current_amount,
+                sizes: p.sizes,
+                colors: p.colors
+            }, { new: true });
+            prods.push(p);
+            console.log('updated');
+        });
+        console.log('Done');
+        res.send(prods);
+    }
+    start();
+    res.send(products);
+    // Product.updateMany(products)
+    //     .then(data => {
+    //         res.send(data);
+    //     }).catch(err => {
+    //         res.status(500).send({
+    //             message: err.message
+    //         });
+    //     });
 };
 
 
@@ -137,3 +169,9 @@ exports.delete = (req, res) => {
             });
         });
 };
+
+async function asyncForEach(array, callback) {
+    for (let index = 0; index < array.length; index++) {
+        await callback(array[index], index, array);
+    }
+}
